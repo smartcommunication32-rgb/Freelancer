@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Financial Partner Program</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Poppins,sans-serif}
+body{background:#f4f7fb;padding:16px}
+.container{max-width:1100px;margin:auto}
+.card{background:#fff;border-radius:16px;padding:22px;margin-bottom:18px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+h1,h2,h3{text-align:center;color:#0b3c5d;margin-bottom:12px}
+p{text-align:center;color:#555;font-size:14px;line-height:1.6}
+.flex{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn{border:none;border-radius:40px;padding:14px 26px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;transition:.3s}
+.btn:hover{transform:translateY(-2px)}
+.primary{background:#0072ff;color:#fff}
+.success{background:#2e7d32;color:#fff}
+.dark{background:#111;color:#fff}
+.warning-btn{background:#ff9800;color:#fff}
+.admin-banner{background:#000;color:#ffeb3b;padding:10px;text-align:center;font-weight:600;border-radius:10px;margin-bottom:16px}
+.header{background:linear-gradient(135deg,#0072ff,#00c6ff);color:#fff}
+.header h1{color:#fff}
+.header p{color:#eaf6ff}
+.counter{font-size:32px;font-weight:700;color:#2e7d32;text-align:center}
+.ticker{background:#eef6ff;padding:10px;border-radius:10px;text-align:center;font-weight:600;color:#0b3c5d}
+ul{margin-top:10px;padding-left:20px}
+li{font-size:14px;color:#444;line-height:1.8}
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th,td{padding:10px;border-bottom:1px solid #ddd;text-align:center;font-size:14px}
+th{background:#f1f5ff}
+.badge{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600}
+.pending{background:#fff3cd;color:#856404}
+.approved{background:#d4edda;color:#155724}
+.paid{background:#cce5ff;color:#004085}
+.server{background:rgba(0,114,255,.08);border:2px solid rgba(0,114,255,.25);border-radius:50px;padding:14px 24px;color:#0b3c5d;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:10px;transition:.3s}
+.server:hover{transform:scale(1.05)}
+.dot{width:10px;height:10px;background:#00c853;border-radius:50%;box-shadow:0 0 8px #00c853}
+.timeline{display:flex;gap:10px;justify-content:space-between;margin-top:14px}
+.step{flex:1;background:#eef2ff;padding:10px;border-radius:10px;font-size:12px;font-weight:600;text-align:center}
+.offer{background:#e8fff2;border:2px dashed #2e7d32;color:#2e7d32}
+footer{font-size:12px;color:#666;text-align:center;margin-top:20px}
+@media(max-width:600px){.btn,.server{width:100%}.timeline{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="admin-banner">
+⚠ Admin Update: High approval ratio & fast payout active today
+</div>
+
+<div class="card header">
+<h1>Financial Service Partner Program</h1>
+<p>Earn 200–450 per successful application like Loan, Account Opening, Credit Card, Demat or more</p>
+</div>
+
+<div class="card">
+<h2>Top Earners</h2>
+<div id="topEarners" class="flex"></div>
+</div>
+
+<!-- BS GOLDEN TEAM -->
+<div class="card">
+<h2>BS Golden Team – Panel</h2>
+<div class="flex">
+<a class="btn primary" target="_blank" href="https://www.goldenteam.in/?hkg=bU1lRjl3dTg2ejJqekZIMWxyeit6dz09">Open BS Golden Team Panel</a>
+</div>
+</div>
+
+<!-- AO SMART BANKING -->
+<div class="card">
+<h2>AO Smart Banking Solutions</h2>
+<div class="flex">
+<a class="btn dark" target="_blank" href="https://mysalesboard.in/?dist=6c27035490619d9e11c30eb8b3e58fee">Open AO Smart Banking Panel</a>
+</div>
+</div>
+
+<!-- CLAIM -->
+<div class="card">
+<h2>Claim Your Earnings</h2>
+<p>Successful data submit ke 2 din ke andar payment mil jaata hai</p>
+<div class="flex">
+<a class="btn success" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeNtYE0lZwb8zPmF_BhXp5LrRnOHD8fS9vSP6s-SWqmFZRcmg/viewform">Claim Money</a>
+</div>
+</div>
+
+<footer>
+<p><b>Terms & Disclaimer:</b> Payment is subject to successful verification and bank approval. Incorrect/fake data will not be paid. Partner is responsible for customer consent.</p>
+</footer>
+
+</div>
+
+<script>
+const sheetUrl = "https://opensheet.elk.sh/1T4NjO0eEKl7hXB45cho-eOhTdtCg0OVgra_Bi-k_WkY/Form%20responses%201";
+
+fetch(sheetUrl)
+.then(res => res.json())
+.then(data => {
+  const earnings = {};
+  data.forEach(r => {
+    const name = r["operator name "].trim();
+    const amount = parseFloat(r["AMOUNT"]);
+    const status = r["STATUS "].trim().toUpperCase();
+    if(!earnings[name]) earnings[name] = 0;
+    if(status === "PAID") earnings[name] += amount;
+  });
+
+  const topEarnersDiv = document.getElementById("topEarners");
+  const sorted = Object.entries(earnings).sort((a,b)=>b[1]-a[1]);
+  sorted.slice(0,3).forEach(([name,total])=>{
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.flex = "1 1 30%";
+    card.style.textAlign = "center";
+    card.innerHTML = `<h3>${name}</h3><p>Total Paid: ₹${total}</p>`;
+    topEarnersDiv.appendChild(card);
+  });
+})
+.catch(err=>console.log("Data fetch error:",err));
+</script>
+</body>
+</html>
