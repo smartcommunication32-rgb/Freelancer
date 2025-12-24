@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Financial Partner Program</title>
+<title>Financial Partner Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -23,8 +23,8 @@ p{text-align:center;color:#555;font-size:14px;line-height:1.6}
 .header{background:linear-gradient(135deg,#0072ff,#00c6ff);color:#fff}
 .header h1{color:#fff}
 .header p{color:#eaf6ff}
-.counter{font-size:32px;font-weight:700;color:#2e7d32;text-align:center}
-.ticker{background:#eef6ff;padding:10px;border-radius:10px;text-align:center;font-weight:600;color:#0b3c5d}
+.counter{font-size:28px;font-weight:700;color:#2e7d32;text-align:center}
+.ticker{background:#eef6ff;padding:10px;border-radius:10px;text-align:center;font-weight:600;color:#0b3c5d;margin-bottom:16px}
 ul{margin-top:10px;padding-left:20px}
 li{font-size:14px;color:#444;line-height:1.8}
 table{width:100%;border-collapse:collapse;margin-top:12px}
@@ -37,11 +37,8 @@ th{background:#f1f5ff}
 .server{background:rgba(0,114,255,.08);border:2px solid rgba(0,114,255,.25);border-radius:50px;padding:14px 24px;color:#0b3c5d;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:10px;transition:.3s}
 .server:hover{transform:scale(1.05)}
 .dot{width:10px;height:10px;background:#00c853;border-radius:50%;box-shadow:0 0 8px #00c853}
-.timeline{display:flex;gap:10px;justify-content:space-between;margin-top:14px}
-.step{flex:1;background:#eef2ff;padding:10px;border-radius:10px;font-size:12px;font-weight:600;text-align:center}
-.offer{background:#e8fff2;border:2px dashed #2e7d32;color:#2e7d32}
 footer{font-size:12px;color:#666;text-align:center;margin-top:20px}
-@media(max-width:600px){.btn,.server{width:100%}.timeline{flex-direction:column}}
+@media(max-width:600px){.btn,.server{width:100%}}
 </style>
 </head>
 <body>
@@ -52,10 +49,15 @@ footer{font-size:12px;color:#666;text-align:center;margin-top:20px}
 </div>
 
 <div class="card header">
-<h1>Financial Service Partner Program</h1>
-<p>Earn 200–450 per successful application like Loan, Account Opening, Credit Card, Demat or more</p>
+<h1>Financial Service Partner Dashboard</h1>
+<p>Earn 200–450 per successful application like Loan, Account Opening, Credit Card, Demat & Investment</p>
 </div>
 
+<div class="card ticker" id="ticker">
+Loading recent approvals...
+</div>
+
+<!-- Top Earners -->
 <div class="card">
 <h2>Top Earners</h2>
 <div id="topEarners" class="flex"></div>
@@ -77,13 +79,26 @@ footer{font-size:12px;color:#666;text-align:center;margin-top:20px}
 </div>
 </div>
 
-<!-- CLAIM -->
+<!-- Claim -->
 <div class="card">
 <h2>Claim Your Earnings</h2>
 <p>Successful data submit ke 2 din ke andar payment mil jaata hai</p>
 <div class="flex">
 <a class="btn success" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeNtYE0lZwb8zPmF_BhXp5LrRnOHD8fS9vSP6s-SWqmFZRcmg/viewform">Claim Money</a>
 </div>
+</div>
+
+<!-- Service-wise Earnings (moved below claim) -->
+<div class="card">
+<h2>Service-wise Earnings</h2>
+<table>
+<thead>
+<tr><th>Operator</th><th>Total Paid</th><th>Status</th></tr>
+</thead>
+<tbody id="earningTable">
+<tr><td colspan="3">Loading data...</td></tr>
+</tbody>
+</table>
 </div>
 
 <footer>
@@ -98,25 +113,57 @@ const sheetUrl = "https://opensheet.elk.sh/1T4NjO0eEKl7hXB45cho-eOhTdtCg0OVgra_B
 fetch(sheetUrl)
 .then(res => res.json())
 .then(data => {
-  const earnings = {};
-  data.forEach(r => {
-    const name = r["operator name "].trim();
-    const amount = parseFloat(r["AMOUNT"]);
-    const status = r["STATUS "].trim().toUpperCase();
-    if(!earnings[name]) earnings[name] = 0;
-    if(status === "PAID") earnings[name] += amount;
-  });
+    // Earnings & Top Earners
+    const earnings = {};
+    let recentApprovals = [];
+    data.forEach(r => {
+        const name = r["operator name "].trim();
+        const amount = parseFloat(r["AMOUNT"]) || 0;
+        const status = r["STATUS "].trim().toUpperCase();
+        if(!earnings[name]) earnings[name] = {total:0, paid:0, pending:0};
+        if(status === "PAID"){
+            earnings[name].total += amount;
+            earnings[name].paid += amount;
+            recentApprovals.push(`✔ ${name} received ₹${amount}`);
+        } else if(status === "PENDING"){
+            earnings[name].pending += amount;
+        }
+    });
 
-  const topEarnersDiv = document.getElementById("topEarners");
-  const sorted = Object.entries(earnings).sort((a,b)=>b[1]-a[1]);
-  sorted.slice(0,3).forEach(([name,total])=>{
-    const card = document.createElement("div");
-    card.className = "card";
-    card.style.flex = "1 1 30%";
-    card.style.textAlign = "center";
-    card.innerHTML = `<h3>${name}</h3><p>Total Paid: ₹${total}</p>`;
-    topEarnersDiv.appendChild(card);
-  });
+    // Top Earners
+    const topEarnersDiv = document.getElementById("topEarners");
+    const sorted = Object.entries(earnings).sort((a,b)=>b[1].total - a[1].total);
+    topEarnersDiv.innerHTML = "";
+    sorted.slice(0,3).forEach(([name,data])=>{
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.flex = "1 1 30%";
+        card.style.textAlign = "center";
+        card.innerHTML = `<h3>${name}</h3>
+                          <p>Total Paid: ₹${data.paid}</p>
+                          <p>Pending: ₹${data.pending}</p>`;
+        topEarnersDiv.appendChild(card);
+    });
+
+    // Earnings Table
+    const tableBody = document.getElementById("earningTable");
+    tableBody.innerHTML = "";
+    sorted.forEach(([name,data])=>{
+        const row = document.createElement("tr");
+        const statusText = data.pending > 0 ? "Pending" : "Paid";
+        const statusClass = data.pending > 0 ? "pending" : "paid";
+        row.innerHTML = `<td>${name}</td><td>₹${data.paid}</td><td><span class="badge ${statusClass}">${statusText}</span></td>`;
+        tableBody.appendChild(row);
+    });
+
+    // Ticker
+    const ticker = document.getElementById("ticker");
+    let i=0;
+    if(recentApprovals.length === 0) recentApprovals = ["No approvals yet"];
+    setInterval(()=>{
+        ticker.innerText = recentApprovals[i];
+        i=(i+1)%recentApprovals.length;
+    },3000);
 })
 .catch(err=>console.log("Data fetch error:",err));
 </script>
