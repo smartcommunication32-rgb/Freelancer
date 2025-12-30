@@ -5,7 +5,6 @@
 <title>EarnBridge – Partner Platform</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
 body{background:#f5f7fb;color:#222}
@@ -22,24 +21,26 @@ background:#fff;color:#000;padding:10px 22px;border-radius:30px;
 text-decoration:none;font-weight:600
 }
 
-/* HERO */
-.hero{
-margin-top:20px;
-background:linear-gradient(135deg,#0072ff,#00c6ff);
-border-radius:22px;padding:60px 20px;color:#fff;text-align:center
+/* HERO + STICKY FLEX */
+.hero-flex{
+display:flex;flex-wrap:wrap;gap:20px;justify-content:center;align-items:flex-start;margin-top:30px
 }
-.hero h1{font-size:36px;margin-bottom:12px}
-.hero p{font-size:16px;max-width:760px;margin:auto;opacity:.95}
-.hero-actions{
-margin-top:26px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap
+.hero-left{
+flex:1;min-width:300px;background:linear-gradient(135deg,#0072ff,#00c6ff);padding:40px 20px;border-radius:22px;color:#fff;
 }
-.hero-actions a{
-background:#fff;color:#0072ff;
-padding:14px 32px;border-radius:40px;
-text-decoration:none;font-weight:600
+.hero-left h1{font-size:28px;margin-bottom:12px}
+.hero-left p{font-size:15px;line-height:1.6}
+.hero-left .hero-buttons{margin-top:20px;display:flex;gap:10px}
+.hero-left .hero-buttons a{
+background:#fff;color:#0072ff;padding:12px 24px;border-radius:30px;text-decoration:none;font-weight:600
 }
+.sticky-note{
+flex:1;min-width:300px;background:#fff8c6;border:2px solid #f0e68c;padding:20px 24px;border-radius:12px;box-shadow:5px 5px 15px rgba(0,0,0,0.2);font-family:Poppins,sans-serif;transform:rotate(-2deg);
+}
+.sticky-note h3{color:#d2691e;margin-bottom:12px;font-size:18px;}
+.sticky-note p{font-size:14px;line-height:1.6;color:#333}
 
-/* STATS CARDS */
+/* STATS */
 .stats{
 display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:16px;margin-top:28px
@@ -50,29 +51,10 @@ box-shadow:0 8px 22px rgba(0,0,0,.08)
 }
 .stat h3{color:#0072ff;margin-bottom:6px}
 
-/* SECTION TITLES */
-.section{margin-top:44px}
-.section h2{text-align:center;margin-bottom:22px;color:#0b3c5d}
-
-/* STEPS */
-.steps{
-display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:16px
-}
-.step{
-background:#fff;border-radius:16px;padding:22px;text-align:center;
-box-shadow:0 8px 22px rgba(0,0,0,.08)
-}
-.step span{
-display:inline-block;background:#0072ff;color:#fff;
-width:36px;height:36px;border-radius:50%;
-line-height:36px;font-weight:700;margin-bottom:10px
-}
-
 /* PLATFORMS */
 .platforms{
 display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:22px
+gap:22px;margin-top:40px
 }
 .platform{
 background:#fff;border-radius:20px;padding:26px;
@@ -88,7 +70,7 @@ padding:12px 26px;border-radius:30px;
 text-decoration:none;font-weight:600
 }
 
-/* TOP & PENDING EARNINGS TABLE */
+/* TABLE */
 .table-container{
 background:#fff;border-radius:16px;padding:22px;box-shadow:0 8px 22px rgba(0,0,0,.08);margin-top:30px
 }
@@ -126,7 +108,6 @@ margin-top:44px;text-align:center;font-size:13px;color:#666
 footer a{color:#0072ff;text-decoration:none;margin:0 8px}
 </style>
 </head>
-
 <body>
 <div class="container">
 
@@ -136,18 +117,31 @@ footer a{color:#0072ff;text-decoration:none;margin:0 8px}
 <a href="#login" class="nav-btn">Partner Login</a>
 </div>
 
-<!-- HERO -->
-<div class="hero">
-<h1>Earn from Financial & Shopping Services</h1>
-<p>
-Submit verified customer data and earn commissions.
-Customers receive <b>50%–80% discounts</b>, resulting in high approval and payout rates.
-</p>
+<!-- HERO + STICKY -->
+<div class="hero-flex">
+  <div class="hero-left">
+    <h1>Earn from Financial & Shopping Services</h1>
+    <p>Submit verified customer data and earn commissions.<br>Customers receive <b>50%–80% discounts</b>, boosting approvals and payouts.</p>
+    <div class="hero-buttons">
+      <a href="#bs">BS Golden Team</a>
+      <a href="#ao">AO Smart Banking</a>
+    </div>
+  </div>
 
-<div class="hero-actions">
-<a href="#bs">BS Golden Team</a>
-<a href="#ao">AO Smart Banking</a>
-</div>
+  <div class="sticky-note">
+    <h3>EarnBridge – Win & Benefit!</h3>
+    <p>
+    <b>For You (Partner):</b><br>
+    - Earn <b>real money instantly</b> from financial & shopping services.<br>
+    - <b>Track your earnings</b> – Paid & Pending in real-time.<br>
+    - <b>Fast payouts</b> straight to your bank. Work smart, earn faster.<br><br>
+    <b>For Customers:</b><br>
+    - Get <b>50%–80% discounts</b> on shopping & financial products.<br>
+    - Access credit cards, loans, demat & savings accounts easily.<br>
+    - Quick approvals & trusted services. Save money, save time.<br><br>
+    <i>“Help customers save, submit verified data, and earn instantly. Simple. Fast. Profitable.”</i>
+    </p>
+  </div>
 </div>
 
 <!-- STATS -->
@@ -158,36 +152,12 @@ Customers receive <b>50%–80% discounts</b>, resulting in high approval and pay
 <div class="stat"><h3>Secure</h3><p>Data Handling</p></div>
 </div>
 
-<!-- HOW IT WORKS -->
-<div class="section">
-<h2>How It Works</h2>
-<div class="steps">
-<div class="step"><span>1</span><p>Login to Partner Panel</p></div>
-<div class="step"><span>2</span><p>Submit Customer Data</p></div>
-<div class="step"><span>3</span><p>Verification & Approval</p></div>
-<div class="step"><span>4</span><p>Get Paid to Bank</p></div>
-</div>
-</div>
-
 <!-- PLATFORMS -->
-<div class="section">
-<h2>Partner Platforms</h2>
 <div class="platforms">
-
 <div class="platform" id="bs">
 <h3>BS Golden Team</h3>
-<p>
-Earn from <b>financial + shopping services</b>.
-Customers get <b>50%–80% discounts</b>, increasing conversion.
-</p>
-<ul>
-<li>Shopping Earnings & Cashback</li>
-<li>Financial Product Commissions</li>
-<li>Fast Approval & Payout</li>
-</ul>
-<a target="_blank" href="https://www.goldenteam.in/?hkg=bU1lRjl3dTg2ejJqekZIMWxyeit6dz09">
-Login / Register
-</a>
+<p>Earn from <b>financial + shopping services</b>. Customers get <b>50%–80% discounts</b>.</p>
+<a target="_blank" href="https://www.goldenteam.in/?hkg=bU1lRjl3dTg2ejJqekZIMWxyeit6dz09">Login / Register</a>
 </div>
 
 <div class="platform" id="ao">
@@ -202,16 +172,12 @@ Login / Register
 <li>Business Loan</li>
 <li>Business Account</li>
 </ul>
-<a target="_blank" href="https://mysalesboard.in/?dist=6c27035490619d9e11c30eb8b3e58fee">
-Login / Register
-</a>
-</div>
-
+<a target="_blank" href="https://mysalesboard.in/?dist=6c27035490619d9e11c30eb8b3e58fee">Login / Register</a>
 </div>
 </div>
 
 <!-- TOP & PENDING EARNINGS -->
-<div class="section table-container">
+<div class="table-container">
 <h2>Top & Pending Earnings</h2>
 <table>
 <thead>
@@ -223,25 +189,18 @@ Login / Register
 </table>
 </div>
 
-<!-- CLAIM ONLY -->
-<div class="section action">
+<!-- CLAIM -->
+<div class="action">
 <h2>Claim Your Earnings</h2>
-<p>After your work is approved, payouts are credited directly to your bank account.</p>
+<p>Payouts are credited directly to your bank after verification.</p>
 <div class="action-btns">
-<a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeNtYE0lZwb8zPmF_BhXp5LrRnOHD8fS9vSP6s-SWqmFZRcmg/viewform">
-Claim Earnings
-</a>
+<a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeNtYE0lZwb8zPmF_BhXp5LrRnOHD8fS9vSP6s-SWqmFZRcmg/viewform">Claim Earnings</a>
 </div>
 </div>
 
 <!-- FOOTER -->
 <footer>
-<p>
-© 2025 EarnBridge |
-<a href="#">Terms</a> |
-<a href="#">Privacy</a> |
-<a href="#">Disclaimer</a>
-</p>
+<p>© 2025 EarnBridge | <a href="#">Terms</a> | <a href="#">Privacy</a> | <a href="#">Disclaimer</a></p>
 <p>Payments are subject to verification. Fake or incorrect data will not be paid.</p>
 </footer>
 
