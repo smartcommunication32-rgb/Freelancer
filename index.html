@@ -2,171 +2,282 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Financial Partner Dashboard</title>
+<title>EarnBridge – Partner Platform</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Poppins,sans-serif}
-body{background:#f4f7fb;padding:16px}
-.container{max-width:1100px;margin:auto}
-.card{background:#fff;border-radius:16px;padding:22px;margin-bottom:18px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
-h1,h2,h3{text-align:center;color:#0b3c5d;margin-bottom:12px}
-p{text-align:center;color:#555;font-size:14px;line-height:1.6}
-.flex{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
-.btn{border:none;border-radius:40px;padding:14px 26px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;transition:.3s}
-.btn:hover{transform:translateY(-2px)}
-.primary{background:#0072ff;color:#fff}
-.success{background:#2e7d32;color:#fff}
-.dark{background:#111;color:#fff}
-.warning-btn{background:#ff9800;color:#fff}
-.admin-banner{background:#000;color:#ffeb3b;padding:10px;text-align:center;font-weight:600;border-radius:10px;margin-bottom:16px}
-.header{background:linear-gradient(135deg,#0072ff,#00c6ff);color:#fff}
-.header h1{color:#fff}
-.header p{color:#eaf6ff}
-.counter{font-size:28px;font-weight:700;color:#2e7d32;text-align:center}
-.ticker{background:#eef6ff;padding:10px;border-radius:10px;text-align:center;font-weight:600;color:#0b3c5d;margin-bottom:16px}
-ul{margin-top:10px;padding-left:20px}
-li{font-size:14px;color:#444;line-height:1.8}
-table{width:100%;border-collapse:collapse;margin-top:12px}
-th,td{padding:10px;border-bottom:1px solid #ddd;text-align:center;font-size:14px}
-th{background:#f1f5ff}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
+body{background:#f5f7fb;color:#222}
+.container{max-width:1200px;margin:auto;padding:20px}
+
+/* NAVBAR */
+.navbar{
+display:flex;justify-content:space-between;align-items:center;
+padding:16px 22px;background:#0b0b0b;border-radius:14px;color:#fff
+}
+.brand{font-size:22px;font-weight:700}
+.nav-btn{
+background:#fff;color:#000;padding:10px 22px;border-radius:30px;
+text-decoration:none;font-weight:600
+}
+
+/* HERO */
+.hero{
+margin-top:20px;
+background:linear-gradient(135deg,#0072ff,#00c6ff);
+border-radius:22px;padding:60px 20px;color:#fff;text-align:center
+}
+.hero h1{font-size:36px;margin-bottom:12px}
+.hero p{font-size:16px;max-width:760px;margin:auto;opacity:.95}
+.hero-actions{
+margin-top:26px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap
+}
+.hero-actions a{
+background:#fff;color:#0072ff;
+padding:14px 32px;border-radius:40px;
+text-decoration:none;font-weight:600
+}
+
+/* STATS CARDS */
+.stats{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:16px;margin-top:28px
+}
+.stat{
+background:#fff;border-radius:16px;padding:22px;text-align:center;
+box-shadow:0 8px 22px rgba(0,0,0,.08)
+}
+.stat h3{color:#0072ff;margin-bottom:6px}
+
+/* SECTION TITLES */
+.section{margin-top:44px}
+.section h2{text-align:center;margin-bottom:22px;color:#0b3c5d}
+
+/* STEPS */
+.steps{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:16px
+}
+.step{
+background:#fff;border-radius:16px;padding:22px;text-align:center;
+box-shadow:0 8px 22px rgba(0,0,0,.08)
+}
+.step span{
+display:inline-block;background:#0072ff;color:#fff;
+width:36px;height:36px;border-radius:50%;
+line-height:36px;font-weight:700;margin-bottom:10px
+}
+
+/* PLATFORMS */
+.platforms{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:22px
+}
+.platform{
+background:#fff;border-radius:20px;padding:26px;
+box-shadow:0 10px 26px rgba(0,0,0,.1)
+}
+.platform h3{color:#0072ff;margin-bottom:10px}
+.platform ul{padding-left:18px;margin-top:10px}
+.platform li{font-size:14px;line-height:1.8}
+.platform a{
+display:inline-block;margin-top:16px;
+background:#0072ff;color:#fff;
+padding:12px 26px;border-radius:30px;
+text-decoration:none;font-weight:600
+}
+
+/* TOP & PENDING EARNINGS TABLE */
+.table-container{
+background:#fff;border-radius:16px;padding:22px;box-shadow:0 8px 22px rgba(0,0,0,.08);margin-top:30px
+}
+.table-container table{
+width:100%;border-collapse:collapse;margin-top:10px
+}
+.table-container th, .table-container td{
+padding:10px;border-bottom:1px solid #ddd;text-align:center;font-size:14px
+}
+.table-container th{background:#f1f5ff}
 .badge{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600}
 .pending{background:#fff3cd;color:#856404}
-.approved{background:#d4edda;color:#155724}
 .paid{background:#cce5ff;color:#004085}
-.server{background:rgba(0,114,255,.08);border:2px solid rgba(0,114,255,.25);border-radius:50px;padding:14px 24px;color:#0b3c5d;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:10px;transition:.3s}
-.server:hover{transform:scale(1.05)}
-.dot{width:10px;height:10px;background:#00c853;border-radius:50%;box-shadow:0 0 8px #00c853}
-footer{font-size:12px;color:#666;text-align:center;margin-top:20px}
-@media(max-width:600px){.btn,.server{width:100%}}
+
+/* CLAIM ONLY */
+.action{
+background:#0b3c5d;color:#fff;
+border-radius:22px;padding:46px 20px;text-align:center;margin-top:40px
+}
+.action h2{color:#fff;margin-bottom:10px}
+.action p{opacity:.95}
+.action-btns{
+margin-top:24px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap
+}
+.action-btns a{
+background:#fff;color:#0b3c5d;
+padding:14px 30px;border-radius:40px;
+text-decoration:none;font-weight:600
+}
+
+/* FOOTER */
+footer{
+margin-top:44px;text-align:center;font-size:13px;color:#666
+}
+footer a{color:#0072ff;text-decoration:none;margin:0 8px}
 </style>
 </head>
+
 <body>
 <div class="container">
 
-<div class="admin-banner">
-⚠ Admin Update: High approval ratio & fast payout active today
+<!-- NAVBAR -->
+<div class="navbar">
+<div class="brand">EarnBridge</div>
+<a href="#login" class="nav-btn">Partner Login</a>
 </div>
 
-<div class="card header">
-<h1>Financial Service Partner Dashboard</h1>
-<p>Earn 200–450 per successful application like Loan, Account Opening, Credit Card, Demat & Investment</p>
-</div>
+<!-- HERO -->
+<div class="hero">
+<h1>Earn from Financial & Shopping Services</h1>
+<p>
+Submit verified customer data and earn commissions.
+Customers receive <b>50%–80% discounts</b>, resulting in high approval and payout rates.
+</p>
 
-<div class="card ticker" id="ticker">
-Loading recent approvals...
-</div>
-
-<!-- Top Earners -->
-<div class="card">
-<h2>Top Earners</h2>
-<div id="topEarners" class="flex"></div>
-</div>
-
-<!-- BS GOLDEN TEAM -->
-<div class="card">
-<h2>BS Golden Team – Panel</h2>
-<div class="flex">
-<a class="btn primary" target="_blank" href="https://www.goldenteam.in/?hkg=bU1lRjl3dTg2ejJqekZIMWxyeit6dz09"> Login / Registration BS Golden Team </a>
+<div class="hero-actions">
+<a href="#bs">BS Golden Team</a>
+<a href="#ao">AO Smart Banking</a>
 </div>
 </div>
 
-<!-- AO SMART BANKING -->
-<div class="card">
-<h2>AO Smart Banking Solutions</h2>
-<div class="flex">
-<a class="btn dark" target="_blank" href="https://mysalesboard.in/?dist=6c27035490619d9e11c30eb8b3e58fee">Login / Registration AO Smart Banking</a>
+<!-- STATS -->
+<div class="stats">
+<div class="stat"><h3>48 Hours</h3><p>Fast Payout</p></div>
+<div class="stat"><h3>Verified</h3><p>Banks & NBFCs</p></div>
+<div class="stat"><h3>High</h3><p>Approval Ratio</p></div>
+<div class="stat"><h3>Secure</h3><p>Data Handling</p></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section">
+<h2>How It Works</h2>
+<div class="steps">
+<div class="step"><span>1</span><p>Login to Partner Panel</p></div>
+<div class="step"><span>2</span><p>Submit Customer Data</p></div>
+<div class="step"><span>3</span><p>Verification & Approval</p></div>
+<div class="step"><span>4</span><p>Get Paid to Bank</p></div>
 </div>
 </div>
 
-<!-- Claim -->
-<div class="card">
-<h2>Claim Your Earnings</h2>
-<p>Payment is credited to your bank account within 2 days after successful data submission.</p>
-<div class="flex">
-<a class="btn success" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeNtYE0lZwb8zPmF_BhXp5LrRnOHD8fS9vSP6s-SWqmFZRcmg/viewform">Claim Money</a>
+<!-- PLATFORMS -->
+<div class="section">
+<h2>Partner Platforms</h2>
+<div class="platforms">
+
+<div class="platform" id="bs">
+<h3>BS Golden Team</h3>
+<p>
+Earn from <b>financial + shopping services</b>.
+Customers get <b>50%–80% discounts</b>, increasing conversion.
+</p>
+<ul>
+<li>Shopping Earnings & Cashback</li>
+<li>Financial Product Commissions</li>
+<li>Fast Approval & Payout</li>
+</ul>
+<a target="_blank" href="https://www.goldenteam.in/?hkg=bU1lRjl3dTg2ejJqekZIMWxyeit6dz09">
+Login / Register
+</a>
+</div>
+
+<div class="platform" id="ao">
+<h3>AO Smart Banking</h3>
+<ul>
+<li>Credit Card</li>
+<li>Demat Account</li>
+<li>Savings Account</li>
+<li>Instant Loan</li>
+<li>Bajaj Card</li>
+<li>Personal Loan</li>
+<li>Business Loan</li>
+<li>Business Account</li>
+</ul>
+<a target="_blank" href="https://mysalesboard.in/?dist=6c27035490619d9e11c30eb8b3e58fee">
+Login / Register
+</a>
+</div>
+
 </div>
 </div>
 
-<!-- Service-wise Earnings (moved below claim) -->
-<div class="card">
-<h2>Service-wise Earnings</h2>
+<!-- TOP & PENDING EARNINGS -->
+<div class="section table-container">
+<h2>Top & Pending Earnings</h2>
 <table>
 <thead>
-<tr><th>Operator</th><th>Total Paid</th><th>Status</th></tr>
+<tr><th>Operator</th><th>Total Paid (₹)</th><th>Pending (₹)</th><th>Status</th></tr>
 </thead>
 <tbody id="earningTable">
-<tr><td colspan="3">Loading data...</td></tr>
+<tr><td colspan="4">Loading data...</td></tr>
 </tbody>
 </table>
 </div>
 
-<footer>
-<p><b>Terms & Disclaimer:</b> Payment is subject to successful verification and bank approval. Incorrect/fake data will not be paid. Partner is responsible for customer consent.</p>
-</footer>
-
+<!-- CLAIM ONLY -->
+<div class="section action">
+<h2>Claim Your Earnings</h2>
+<p>After your work is approved, payouts are credited directly to your bank account.</p>
+<div class="action-btns">
+<a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeNtYE0lZwb8zPmF_BhXp5LrRnOHD8fS9vSP6s-SWqmFZRcmg/viewform">
+Claim Earnings
+</a>
+</div>
 </div>
 
+<!-- FOOTER -->
+<footer>
+<p>
+© 2025 EarnBridge |
+<a href="#">Terms</a> |
+<a href="#">Privacy</a> |
+<a href="#">Disclaimer</a>
+</p>
+<p>Payments are subject to verification. Fake or incorrect data will not be paid.</p>
+</footer>
+
 <script>
+// Google Sheet JSON link
 const sheetUrl = "https://opensheet.elk.sh/1T4NjO0eEKl7hXB45cho-eOhTdtCg0OVgra_Bi-k_WkY/Form%20responses%201";
 
 fetch(sheetUrl)
 .then(res => res.json())
 .then(data => {
-    // Earnings & Top Earners
     const earnings = {};
-    let recentApprovals = [];
     data.forEach(r => {
         const name = r["operator name "].trim();
         const amount = parseFloat(r["AMOUNT"]) || 0;
         const status = r["STATUS "].trim().toUpperCase();
-        if(!earnings[name]) earnings[name] = {total:0, paid:0, pending:0};
-        if(status === "PAID"){
-            earnings[name].total += amount;
-            earnings[name].paid += amount;
-            recentApprovals.push(`✔ ${name} received ₹${amount}`);
-        } else if(status === "PENDING"){
-            earnings[name].pending += amount;
-        }
+        if(!earnings[name]) earnings[name] = {paid:0,pending:0};
+        if(status === "PAID") earnings[name].paid += amount;
+        else if(status === "PENDING") earnings[name].pending += amount;
     });
 
-    // Top Earners
-    const topEarnersDiv = document.getElementById("topEarners");
-    const sorted = Object.entries(earnings).sort((a,b)=>b[1].total - a[1].total);
-    topEarnersDiv.innerHTML = "";
-    sorted.slice(0,3).forEach(([name,data])=>{
-        const card = document.createElement("div");
-        card.className = "card";
-        card.style.flex = "1 1 30%";
-        card.style.textAlign = "center";
-        card.innerHTML = `<h3>${name}</h3>
-                          <p>Total Paid: ₹${data.paid}</p>
-                          <p>Pending: ₹${data.pending}</p>`;
-        topEarnersDiv.appendChild(card);
-    });
-
-    // Earnings Table
     const tableBody = document.getElementById("earningTable");
     tableBody.innerHTML = "";
-    sorted.forEach(([name,data])=>{
+    Object.entries(earnings).sort((a,b)=>b[1].paid - a[1].paid).forEach(([name,data])=>{
+        const statusText = data.pending>0?"Pending":"Paid";
+        const statusClass = data.pending>0?"pending":"paid";
         const row = document.createElement("tr");
-        const statusText = data.pending > 0 ? "Pending" : "Paid";
-        const statusClass = data.pending > 0 ? "pending" : "paid";
-        row.innerHTML = `<td>${name}</td><td>₹${data.paid}</td><td><span class="badge ${statusClass}">${statusText}</span></td>`;
+        row.innerHTML = `<td>${name}</td>
+                         <td>₹${data.paid}</td>
+                         <td>₹${data.pending}</td>
+                         <td><span class="badge ${statusClass}">${statusText}</span></td>`;
         tableBody.appendChild(row);
     });
-
-    // Ticker
-    const ticker = document.getElementById("ticker");
-    let i=0;
-    if(recentApprovals.length === 0) recentApprovals = ["No approvals yet"];
-    setInterval(()=>{
-        ticker.innerText = recentApprovals[i];
-        i=(i+1)%recentApprovals.length;
-    },3000);
 })
 .catch(err=>console.log("Data fetch error:",err));
 </script>
+
+</div>
 </body>
 </html>
-
