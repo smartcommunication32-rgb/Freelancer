@@ -6,7 +6,10 @@
     <title>EarnBridge – Partner Super App</title>
     
     <!-- Branding -->
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/48/wallet.png">
     <meta name="theme-color" content="#050505">
+    
+    <!-- Meta Tags -->
     <meta property="og:title" content="EarnBridge - Earn Real Cash Daily! 💸">
     <meta property="og:description" content="Shop on Myntra, Ajio & Earn Real Cash. Verified Payouts.">
     
@@ -14,7 +17,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
@@ -69,6 +73,13 @@
 
         @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
 
+        /* Notification Dropdown */
+        #notif-dropdown {
+            transform-origin: top right; transform: scale(0.95); opacity: 0; pointer-events: none; transition: all 0.2s ease-out;
+        }
+        #notif-dropdown.show { transform: scale(1); opacity: 1; pointer-events: all; }
+
+        /* Toast */
         #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; }
         .toast { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .toast.show { transform: translateX(0); }
@@ -125,7 +136,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M5 3h14a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h12V5H6zm3 4h6v2H9V9zm0 4h6v2H9v-2z"/></svg>
             Ledger
         </a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNtYE0lZwb8zPmF_BhXp5LrRnOHD8fS9vSP6s-SWqmFZRcmg/viewform" target="_blank" class="flex flex-col items-center text-emerald-400 text-[10px] gap-1">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNtYE0lZwb8zPmF_BhXp5LrRnOHD8fS9vSP6s-SWqmFZRcmg/viewform" target="_blank" class="nav-item flex flex-col items-center text-emerald-400 text-[10px] gap-1">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-1-5h2v2h-2v-2zm2-1.645V14h-2v-1.5a1 1 0 0 1 1-1 1.5 1.5 0 1 0-1.471-1.794l-1.962-.393A3.501 3.501 0 1 1 13 13.355z"/></svg>
             Claim
         </a>
@@ -138,7 +149,7 @@
 
     <div class="relative z-10 flex min-h-screen">
         
-        <!-- Sidebar -->
+        <!-- Sidebar (Desktop) -->
         <aside class="hidden lg:flex w-72 flex-col glass border-r-0 border-white/5 fixed h-full z-20">
             <div class="p-8 flex items-center gap-4">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg">
@@ -149,6 +160,7 @@
                     <span class="text-[10px] text-emerald-400 font-mono tracking-widest uppercase">Verified Hub</span>
                 </div>
             </div>
+            
             <nav class="flex-1 px-6 space-y-2 mt-4">
                 <a href="#home" class="flex items-center gap-3 px-4 py-3.5 bg-white/5 text-white rounded-xl border border-white/10 font-medium shadow-inner">
                     Dashboard
@@ -157,6 +169,21 @@
                     Ledger Data
                 </a>
             </nav>
+
+            <!-- 🎯 DAILY GOAL TRACKER -->
+            <div class="px-6 mb-6">
+                <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
+                    <div class="flex justify-between items-end mb-2">
+                        <span class="text-xs text-slate-400 font-bold uppercase">Daily Goal</span>
+                        <span class="text-xs text-emerald-400 font-mono">₹450 / ₹1000</span>
+                    </div>
+                    <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-emerald-500 w-[45%] rounded-full"></div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 mt-2">Just 2 more leads to hit goal! 🚀</p>
+                </div>
+            </div>
+
             <div class="p-6">
                 <div class="p-5 rounded-2xl border border-white/5 bg-gradient-to-b from-slate-800/50 to-transparent">
                     <div class="flex items-center gap-2 mb-2">
@@ -173,9 +200,34 @@
 
         <main class="flex-1 lg:ml-72 p-4 lg:p-8">
             
-            <header class="lg:hidden flex items-center justify-between mb-8 glass p-4 rounded-2xl sticky top-4 z-40 backdrop-blur-xl">
-                <span class="text-lg font-bold text-white">EarnBridge</span>
-                <span class="text-[10px] px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">ONLINE</span>
+            <!-- HEADER with Notification -->
+            <header class="flex items-center justify-between mb-8 glass p-4 rounded-2xl sticky top-4 z-40 backdrop-blur-xl">
+                <div class="flex items-center gap-3">
+                    <div class="lg:hidden w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold">E</div>
+                    <span class="text-lg font-bold text-white">EarnBridge</span>
+                    <span class="hidden sm:block text-[10px] px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">LIVE</span>
+                </div>
+                
+                <div class="relative">
+                    <button onclick="document.getElementById('notif-dropdown').classList.toggle('show')" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:bg-white/10 hover:text-white transition relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20 17h2v2H2v-2h2v-7a8 8 0 1 1 16 0v7zm-2 0v-7a6 6 0 1 0-12 0v7h12zm-9 4h6v2H9v-2z"/></svg>
+                        <span class="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#050505]"></span>
+                    </button>
+                    <!-- Dropdown -->
+                    <div id="notif-dropdown" class="absolute right-0 top-12 w-64 bg-[#1e293b] border border-white/10 rounded-xl shadow-2xl p-2 z-50">
+                        <div class="text-xs font-bold text-slate-400 px-2 py-1 uppercase tracking-wider">Notifications</div>
+                        <div class="mt-2 space-y-1">
+                            <div class="p-2 rounded-lg hover:bg-white/5 cursor-pointer">
+                                <p class="text-sm text-white font-medium">✅ Daily Payouts Cleared</p>
+                                <p class="text-xs text-slate-400">All previous tasks processed successfully.</p>
+                            </div>
+                            <div class="p-2 rounded-lg hover:bg-white/5 cursor-pointer">
+                                <p class="text-sm text-white font-medium">🏆 Leaderboard Updated</p>
+                                <p class="text-xs text-slate-400">Check your rank for this week.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </header>
 
             <!-- HERO -->
@@ -218,7 +270,7 @@
                 </div>
             </div>
 
-            <!-- STATS -->
+            <!-- STATS & LEADERBOARD -->
             <div id="charts" class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
                 <div class="glass-card p-6 rounded-3xl relative overflow-hidden">
                     <p class="text-[11px] text-slate-500 uppercase font-bold tracking-widest mb-1">Total Paid</p>
@@ -380,7 +432,7 @@
                 </div>
             </div>
 
-            <!-- TESTIMONIAL SLIDER -->
+            <!-- ⭐ TESTIMONIAL SLIDER -->
             <div class="mt-12 max-w-3xl mx-auto px-4">
                 <h3 class="text-xl font-bold text-white mb-6 text-center flex items-center justify-center gap-2">
                     💬 What Partners Say
@@ -418,7 +470,7 @@
                             <span>How to submit proof?</span>
                             <span class="transition group-open:rotate-180 text-slate-500">▼</span>
                         </summary>
-                        <p class="text-slate-400 text-xs mt-3 leading-relaxed">Click on the "Claim Now" button above and fill the Google Form with your screenshot and details.</p>
+                        <p class="text-slate-400 text-xs mt-3 leading-relaxed">Click on the "Claim Now" button above and fill the Google Form with your screenshot and details (Customer Name, Mobile No, etc).</p>
                     </details>
                 </div>
             </div>
@@ -437,17 +489,14 @@
 
     <!-- Script -->
     <script>
-        // SCROLL SPY FOR MOBILE NAV
+        // SCROLL SPY
         const sections = document.querySelectorAll("body, #platforms, #earning-section");
         const navItems = document.querySelectorAll(".nav-item");
 
         window.addEventListener("scroll", () => {
             let current = "";
-            
-            // Back to Top Button visibility
             const btt = document.querySelector('.back-to-top');
-            if (window.scrollY > 300) btt.classList.add('show');
-            else btt.classList.remove('show');
+            if (window.scrollY > 300) btt.classList.add('show'); else btt.classList.remove('show');
 
             sections.forEach((section) => {
                 const sectionTop = section.offsetTop;
