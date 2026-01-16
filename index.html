@@ -1,265 +1,737 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-<meta charset="UTF-8">
-<title>EarnBridge – Partner Platform</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EarnBridge – Partner Super App</title>
+    
+    <!-- Branding -->
+    <meta name="theme-color" content="#050505">
+    <meta property="og:title" content="EarnBridge - Earn Real Cash Daily! 💸">
+    <meta property="og:description" content="Shop on Myntra, Ajio & Earn Real Cash. Verified Payouts.">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
-body{background:#f5f7fb;color:#222}
-.container{max-width:1200px;margin:auto;padding:20px}
+    <!-- Libs -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-/* NAVBAR */
-.navbar{
-display:flex;justify-content:space-between;align-items:center;
-padding:16px 22px;background:#0b0b0b;border-radius:14px;color:#fff
-}
-.brand{font-size:22px;font-weight:700}
-.nav-btn{
-background:#fff;color:#000;padding:10px 22px;border-radius:30px;
-text-decoration:none;font-weight:600
-}
+    <style type="text/tailwindcss">
+        @theme {
+            --font-sans: "Outfit", sans-serif;
+            --font-mono: "Space Grotesk", monospace;
+        }
+        
+        html { scroll-behavior: smooth; }
+        body { background-color: #050505; background-image: radial-gradient(circle at 50% 0%, #0f172a 0%, #020617 80%); padding-bottom: 90px; overflow-x: hidden; }
 
-/* HERO */
-.hero-flex{display:flex;flex-wrap:wrap;gap:20px;margin-top:30px}
-.hero-left{
-flex:1;min-width:300px;
-background:linear-gradient(135deg,#0072ff,#00c6ff);
-padding:40px 24px;border-radius:22px;color:#fff
-}
-.hero-left h1{font-size:28px;margin-bottom:12px}
-.hero-left p{font-size:15px;line-height:1.6}
-.hero-buttons{margin-top:20px;display:flex;gap:12px;flex-wrap:wrap}
-.hero-buttons a{
-background:#fff;color:#0072ff;
-padding:12px 24px;border-radius:30px;
-text-decoration:none;font-weight:600;transition:.3s
-}
-.hero-buttons a:hover{transform:scale(1.05)}
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .glass-card {
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.3) 0%, rgba(15, 23, 42, 0.5) 100%);
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.1); }
 
-.sticky-note{
-flex:1;min-width:300px;
-background:#fff8c6;border:2px solid #f0e68c;
-padding:20px 24px;border-radius:12px;
-box-shadow:5px 5px 15px rgba(0,0,0,.2);
-transform:rotate(-2deg)
-}
-.sticky-note h3{color:#d2691e;margin-bottom:10px}
-.sticky-note p{font-size:14px;line-height:1.6}
+        /* Pills */
+        .pill { padding: 6px 10px; border-radius: 8px; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 5px; cursor: default; transition: all 0.2s; white-space: nowrap; }
+        .pill:hover { transform: scale(1.05); }
+        .pill-shop { background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.15); color: #fbbf24; }
+        .pill-bank { background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.15); color: #38bdf8; }
+        
+        .custom-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        
+        /* Floating Elements */
+        .whatsapp-float { position: fixed; bottom: 100px; right: 20px; z-index: 90; animation: pulse-green 2s infinite; transition: all 0.3s; }
+        .back-to-top { position: fixed; bottom: 160px; right: 20px; z-index: 89; opacity: 0; pointer-events: none; transition: all 0.3s; transform: translateY(20px); }
+        .back-to-top.show { opacity: 1; pointer-events: all; transform: translateY(0); }
+        
+        @media (min-width: 1024px) { 
+            .whatsapp-float { bottom: 40px; } 
+            .back-to-top { bottom: 110px; }
+        }
 
-/* STATS */
-.stats{
-display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:16px;margin-top:30px
-}
-.stat{
-background:#fff;border-radius:16px;padding:22px;text-align:center;
-box-shadow:0 8px 22px rgba(0,0,0,.08)
-}
-.stat h3{color:#0072ff;margin-bottom:6px}
+        @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
 
-/* PLATFORMS */
-.platforms{
-display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:22px;margin-top:40px
-}
-.platform{
-background:#fff;border-radius:20px;padding:26px;
-box-shadow:0 10px 26px rgba(0,0,0,.1)
-}
-.platform h3{color:#0072ff}
-.platform ul{padding-left:18px;margin-top:10px}
-.platform li{line-height:1.8;font-size:14px}
-.platform a{
-display:inline-block;margin-top:16px;
-background:#0072ff;color:#fff;
-padding:12px 26px;border-radius:30px;
-text-decoration:none;font-weight:600;transition:.3s
-}
-.platform a:hover{transform:scale(1.05)}
+        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; }
+        .toast { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .toast.show { transform: translateX(0); }
 
-/* TABLE */
-.table-container{
-background:#fff;border-radius:16px;padding:22px;
-box-shadow:0 8px 22px rgba(0,0,0,.08);
-margin-top:40px
-}
-table{width:100%;border-collapse:collapse}
-th,td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
-th{background:#f1f5ff}
+        #social-ticker { position: fixed; bottom: 100px; left: 20px; z-index: 80; pointer-events: none; }
+        @media (min-width: 1024px) { #social-ticker { bottom: 40px; } }
+        .proof-toast { transform: translateY(100px); opacity: 0; transition: all 0.5s ease; }
+        .proof-toast.visible { transform: translateY(0); opacity: 1; }
 
-/* BADGES */
-.badge{
-padding:6px 14px;border-radius:20px;
-font-size:12px;font-weight:600;
-display:inline-flex;align-items:center;gap:6px
-}
-.paid{background:#28a745;color:#fff}
-.pending{background:#ff9800;color:#fff}
-.submitted{
-background:linear-gradient(90deg,#28a745 50%, #e9ecef 50%);
-border:1px solid #28a745;color:#212529
-}
-.spin{animation:spin 1.2s linear infinite}
-@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-
-/* CLAIM */
-.action{
-background:#0b3c5d;color:#fff;
-border-radius:22px;padding:40px 20px;
-text-align:center;margin-top:40px
-}
-.action p{margin-top:8px}
-.action-btns{
-margin-top:22px;
-display:flex;justify-content:center
-}
-.action-btns a{
-background:#fff;color:#0b3c5d;
-padding:14px 30px;border-radius:40px;
-text-decoration:none;font-weight:600;
-transition:.3s
-}
-.action-btns a:hover{transform:scale(1.05)}
-
-/* FOOTER */
-footer{margin-top:40px;text-align:center;font-size:13px;color:#666}
-</style>
+        /* Mobile Nav Active State */
+        .mobile-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            z-index: 100;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-item.active { color: #34d399; }
+        .nav-item.active svg { fill: #34d399; filter: drop-shadow(0 0 5px rgba(52, 211, 153, 0.5)); }
+        
+        /* Testimonial Animation */
+        .fade-enter { opacity: 0; transform: scale(0.95); }
+        .fade-enter-active { opacity: 1; transform: scale(1); transition: opacity 500ms, transform 500ms; }
+    </style>
 </head>
 
-<body>
-<div class="container">
+<body class="text-slate-300 antialiased selection:bg-indigo-500 selection:text-white" id="home">
 
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="brand">EarnBridge</div>
-  <a class="nav-btn">Welcome</a>
-</div>
+    <div id="toast-container"></div>
+    <div id="social-ticker"></div>
 
-<!-- HERO + NOTE -->
-<div class="hero-flex">
-  <div class="hero-left">
-    <h1>Earn from Financial & Shopping Services</h1>
-    <p>
-      Submit verified customer data and earn commissions.<br>
-      Customers receive <b>50%–80% discounts</b>, boosting approvals and payouts.
-    </p>
-    <div class="hero-buttons">
-      <a href="#bs">BS Golden Team</a>
-      <a href="#ao">AO Smart Banking</a>
+    <!-- WhatsApp -->
+    <a href="https://wa.me/919123809257?text=Hi%20EarnBridge,%20I%20want%20to%20start%20earning." target="_blank" class="whatsapp-float bg-[#25D366] w-12 h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center text-white text-2xl lg:text-3xl shadow-2xl hover:scale-110 transition-transform">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12.004 2C6.48 2 2 6.48 2 12.004c0 1.77.46 3.486 1.34 5.002L2 22l5.16-1.354A9.96 9.96 0 0 0 12.004 22c5.523 0 10.003-4.48 10.003-10.004C22.007 6.48 17.527 2 12.004 2zm0 18.007c-1.636 0-3.23-.485-4.63-1.404l-.33-.217-2.936.77.784-2.86-.216-.344a7.973 7.973 0 0 1-1.373-4.453c0-4.412 3.59-8.003 8.002-8.003 4.413 0 8.003 3.59 8.003 8.003 0 4.413-3.59 8.003-8.003 8.003z"/></svg>
+    </a>
+
+    <!-- Back To Top -->
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="back-to-top bg-slate-800 border border-white/20 w-10 h-10 rounded-full flex items-center justify-center text-white shadow-xl hover:bg-slate-700">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M13 7.828V20h-2V7.828l-5.364 5.364-1.414-1.414L12 4l7.778 7.778-1.414 1.414L13 7.828z"/></svg>
+    </button>
+
+    <!-- Mobile Bottom Nav -->
+    <div class="mobile-nav lg:hidden flex justify-around items-center p-3">
+        <a href="#home" class="nav-item flex flex-col items-center text-slate-400 hover:text-white text-[10px] gap-1 active">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 21H5a1 1 0 0 1-1-1v-9H1l10.327-9.388a1 1 0 0 1 1.346 0L23 11h-3v9a1 1 0 0 1-1 1zM6 19h12V9.157l-6-5.454-6 5.454V19z"/></svg>
+            Home
+        </a>
+        <a href="#platforms" class="nav-item flex flex-col items-center text-slate-400 hover:text-white text-[10px] gap-1 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h14V5H5zm2 2h4v2H7V7zm0 4h10v2H7v-2zm0 4h10v2H7v-2z"/></svg>
+            Work
+        </a>
+        <a href="#earning-section" class="nav-item flex flex-col items-center text-slate-400 hover:text-white text-[10px] gap-1 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M5 3h14a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h12V5H6zm3 4h6v2H9V9zm0 4h6v2H9v-2z"/></svg>
+            Ledger
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNtYE0lZwb8zPmF_BhXp5LrRnOHD8fS9vSP6s-SWqmFZRcmg/viewform" target="_blank" class="flex flex-col items-center text-emerald-400 text-[10px] gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-1-5h2v2h-2v-2zm2-1.645V14h-2v-1.5a1 1 0 0 1 1-1 1.5 1.5 0 1 0-1.471-1.794l-1.962-.393A3.501 3.501 0 1 1 13 13.355z"/></svg>
+            Claim
+        </a>
     </div>
-  </div>
 
-  <div class="sticky-note">
-    <h3>EarnBridge – Win & Benefit!</h3>
-    <p>
-      <b>For You (Partner):</b><br>
-      - Earn real money instantly from financial & shopping services.<br>
-      - Track your earnings – Paid & Pending in real-time.<br>
-      - Fast payouts straight to your bank.<br><br>
+    <!-- Background Elements -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] opacity-30"></div>
+    </div>
 
-      <b>For Customers:</b><br>
-      - Get 50%–80% discounts on shopping & financial products.<br>
-      - Access credit cards, loans, demat & savings accounts easily.<br>
-      - Quick approvals & trusted services.<br><br>
+    <div class="relative z-10 flex min-h-screen">
+        
+        <!-- Sidebar -->
+        <aside class="hidden lg:flex w-72 flex-col glass border-r-0 border-white/5 fixed h-full z-20">
+            <div class="p-8 flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M22 7h1v10h-1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v3zm-2 10V6H4v11h16zm-5-7h-2v2h2v-2zm-4 0H9v2h2v-2zm4-4h-2v2h2V6zm-4 0H9v2h2V6z"/></svg>
+                </div>
+                <div>
+                    <span class="text-xl font-bold text-white block tracking-tight">EarnBridge</span>
+                    <span class="text-[10px] text-emerald-400 font-mono tracking-widest uppercase">Verified Hub</span>
+                </div>
+            </div>
+            <nav class="flex-1 px-6 space-y-2 mt-4">
+                <a href="#home" class="flex items-center gap-3 px-4 py-3.5 bg-white/5 text-white rounded-xl border border-white/10 font-medium shadow-inner">
+                    Dashboard
+                </a>
+                <a href="#earning-section" class="flex items-center gap-3 px-4 py-3.5 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl transition-all font-medium">
+                    Ledger Data
+                </a>
+            </nav>
+            <div class="p-6">
+                <div class="p-5 rounded-2xl border border-white/5 bg-gradient-to-b from-slate-800/50 to-transparent">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="text-[10px] text-emerald-400 uppercase font-bold tracking-wider">System Live</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">Processing payouts.</p>
+                </div>
+            </div>
+        </aside>
 
-      <i>“Help customers save, submit verified data, and earn instantly.”</i>
-    </p>
-  </div>
-</div>
+        <main class="flex-1 lg:ml-72 p-4 lg:p-8">
+            
+            <header class="lg:hidden flex items-center justify-between mb-8 glass p-4 rounded-2xl sticky top-4 z-40 backdrop-blur-xl">
+                <span class="text-lg font-bold text-white">EarnBridge</span>
+                <span class="text-[10px] px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">ONLINE</span>
+            </header>
 
-<!-- STATS -->
-<div class="stats">
-  <div class="stat"><h3>48 Hours</h3><p>Fast Payout</p></div>
-  <div class="stat"><h3>Verified</h3><p>Banks & NBFCs</p></div>
-  <div class="stat"><h3>High</h3><p>Approval Ratio</p></div>
-  <div class="stat"><h3>Secure</h3><p>Data Handling</p></div>
-</div>
+            <!-- HERO -->
+            <div class="mb-10 glass p-8 md:p-10 rounded-[32px] relative overflow-hidden group">
+                <div class="absolute right-0 top-0 w-96 h-96 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-full blur-[80px] -mr-20 -mt-20 pointer-events-none group-hover:scale-110 transition duration-1000"></div>
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-block px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-[10px] font-bold border border-indigo-500/20 mb-6 uppercase tracking-wider">
+                        🛠️ How To Earn
+                    </span>
+                    <h1 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-[1.15]">
+                        Complete Tasks & <br/> <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-cyan-400">Claim Real Cash</span>
+                    </h1>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-sm">
+                        <div class="flex items-start gap-3 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition">
+                            <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold shrink-0 shadow-lg">1</div>
+                            <div>
+                                <strong class="text-white block mb-1">Select Task</strong>
+                                <span class="text-slate-400 text-xs">Choose Shopping or Banking.</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition">
+                            <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold shrink-0 shadow-lg">2</div>
+                            <div>
+                                <strong class="text-white block mb-1">Complete It</strong>
+                                <span class="text-slate-400 text-xs">Submit customer details.</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 relative overflow-hidden">
+                            <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold shrink-0 shadow-lg relative z-10">3</div>
+                            <div class="relative z-10">
+                                <strong class="text-white block mb-1">Upload & Paid</strong>
+                                <span class="text-emerald-100/70 text-xs">After success, fill <b>Claim Form</b>.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="document.getElementById('platforms').scrollIntoView({behavior: 'smooth'})" class="px-8 py-4 rounded-2xl bg-white text-black font-bold hover:bg-slate-200 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                        Start Working 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 16l-6-6h12z"/></svg>
+                    </button>
+                </div>
+            </div>
 
-<!-- PLATFORMS -->
-<div class="platforms">
-  <div class="platform" id="bs">
-    <h3>BS Golden Team</h3>
-    <p>Earn from financial + shopping services. Customers get 50%–80% discounts.</p>
-    <a target="_blank" href="https://www.goldenteam.in/?hkg=bU1lRjl3dTg2ejJqekZIMWxyeit6dz09">Login / Register</a>
-  </div>
+            <!-- STATS -->
+            <div id="charts" class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <div class="glass-card p-6 rounded-3xl relative overflow-hidden">
+                    <p class="text-[11px] text-slate-500 uppercase font-bold tracking-widest mb-1">Total Paid</p>
+                    <h3 class="text-3xl font-bold text-white font-mono tracking-tight">₹<span id="stat-paid">0</span></h3>
+                </div>
+                <div class="glass-card p-6 rounded-3xl relative overflow-hidden">
+                    <p class="text-[11px] text-slate-500 uppercase font-bold tracking-widest mb-1">Pending</p>
+                    <h3 class="text-3xl font-bold text-white font-mono tracking-tight">₹<span id="stat-pending">0</span></h3>
+                </div>
+                <div class="md:col-span-2 glass-card p-6 rounded-3xl">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">🏆 Top Partners</h3>
+                    </div>
+                    <div id="leaderboard" class="space-y-3">
+                        <div class="animate-pulse h-8 bg-slate-800 rounded-lg w-full"></div>
+                    </div>
+                </div>
+            </div>
 
-  <div class="platform" id="ao">
-    <h3>AO Smart Banking</h3>
-    <ul>
-      <li>Credit Card</li><li>Demat Account</li><li>Savings Account</li>
-      <li>Instant Loan</li><li>Bajaj Card</li><li>Personal Loan</li>
-      <li>Business Loan</li><li>Business Account</li>
-    </ul>
-    <a target="_blank" href="https://mysalesboard.in/?dist=6c27035490619d9e11c30eb8b3e58fee">Login / Register</a>
-  </div>
-</div>
+            <!-- PLATFORMS -->
+            <div class="flex items-center gap-3 mb-8">
+                <span class="w-8 h-[2px] bg-indigo-500 rounded-full"></span>
+                <h2 class="text-2xl font-bold text-white">Active Panels</h2>
+            </div>
 
-<!-- TOP & PENDING EARNINGS -->
-<div class="table-container">
-<h2>Top & Pending Earnings</h2>
-<table>
-<thead>
-<tr>
-<th>Operator</th>
-<th>Total Paid (₹)</th>
-<th>Pending (₹)</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody id="earningTable">
-<tr><td colspan="4">Loading data...</td></tr>
-</tbody>
-</table>
-</div>
+            <div id="platforms" class="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-16">
+                <!-- BS GOLDEN TEAM -->
+                <div class="glass p-1 rounded-[32px] bg-gradient-to-br from-amber-500/20 via-white/5 to-transparent hover:scale-[1.01] transition-transform duration-500 group">
+                    <div class="bg-[#0b0f17] p-8 rounded-[28px] h-full flex flex-col relative overflow-hidden">
+                        <div class="flex items-start justify-between mb-6 relative z-10">
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 text-3xl border border-amber-500/20">
+                                    👑
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">BS Golden Team</h3>
+                                    <p class="text-xs text-amber-400 font-mono mt-1 tracking-wider">ALL-IN-ONE HUB</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 relative z-10">
+                            <div class="bg-white/5 rounded-2xl p-4 border border-white/5">
+                                <h5 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 border-b border-white/5 pb-2 flex items-center gap-2">
+                                    🛍️ Shopping Zone
+                                </h5>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="pill pill-shop">Myntra</span><span class="pill pill-shop">Ajio</span>
+                                    <span class="pill pill-shop">Nykaa</span><span class="pill pill-shop">Mamaearth</span>
+                                    <span class="pill pill-shop">Dot & Key</span><span class="pill pill-shop">Booking.com</span>
+                                    <span class="pill pill-shop">Clove Oral Care</span>
+                                </div>
+                            </div>
+                            <div class="bg-white/5 rounded-2xl p-4 border border-white/5">
+                                <h5 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 border-b border-white/5 pb-2 flex items-center gap-2">
+                                    🏦 Finance Zone
+                                </h5>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="pill pill-shop">Bank A/C</span><span class="pill pill-shop">Demat</span>
+                                    <span class="pill pill-shop">Credit Cards</span><span class="pill pill-shop">Loan</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-auto pt-4 border-t border-white/5">
+                            <a href="https://www.goldenteam.in/?hkg=bU1lRjl3dTg2ejJqekZIMWxyeit6dz09" target="_blank" class="w-full py-4 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-bold text-sm hover:shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all text-center flex items-center justify-center gap-2">
+                                Login Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-<!-- CLAIM -->
-<div class="action">
-<h2>Claim Your Earnings</h2>
-<p>Payouts are credited directly to your bank after verification.</p>
-<div class="action-btns">
-<a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeNtYE0lZwb8zPmF_BhXp5LrRnOHD8fS9vSP6s-SWqmFZRcmg/viewform">
-Claim Earnings
-</a>
-</div>
-</div>
+                <!-- AO SMART BANKING -->
+                <div id="ao" class="glass p-1 rounded-[32px] bg-gradient-to-br from-cyan-500/20 via-white/5 to-transparent hover:scale-[1.01] transition-transform duration-500 group">
+                    <div class="bg-[#0b0f17] p-8 rounded-[28px] h-full flex flex-col relative overflow-hidden">
+                        <div class="flex items-start justify-between mb-6 relative z-10">
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-2xl border border-cyan-500/20">
+                                    💳
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">AO Smart Banking</h3>
+                                    <p class="text-xs text-cyan-400 font-mono mt-1 tracking-wider">PURE BANKING</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 rounded-2xl p-5 border border-white/5 mb-6">
+                            <h5 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 border-b border-white/5 pb-2 flex items-center gap-2">
+                                💼 Banking Tasks Only
+                            </h5>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="pill pill-bank">Bank Accounts</span><span class="pill pill-bank">Demat</span>
+                                <span class="pill pill-bank">Credit Cards</span><span class="pill pill-bank">Loans</span>
+                                <span class="pill pill-bank">Business A/C</span>
+                            </div>
+                        </div>
+                        <div class="mt-auto pt-4 border-t border-white/5">
+                            <a href="https://mysalesboard.in/?dist=6c27035490619d9e11c30eb8b3e58fee" target="_blank" class="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-black font-bold text-sm hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all text-center flex items-center justify-center gap-2">
+                                Login Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<footer>© 2025 EarnBridge | Payments subject to verification</footer>
+            <!-- LEDGER -->
+            <div id="earning-section" class="glass rounded-[24px] overflow-hidden mb-10 border border-white/5">
+                <div class="p-6 border-b border-white/5 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white/[0.02]">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-indigo-400">
+                            📊
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-white">Payment Ledger</h2>
+                            <p class="text-[10px] text-slate-500 flex items-center gap-2">
+                                Showing latest 10 • <span id="last-updated">Updating...</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                        <div class="relative flex-1 sm:w-64">
+                            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search Partner..." 
+                            class="w-full bg-slate-900/50 border border-white/10 rounded-xl py-2.5 pl-4 pr-4 text-xs text-white focus:outline-none focus:border-indigo-500 focus:bg-slate-900 transition-all">
+                        </div>
+                        <button onclick="downloadCSV()" class="bg-white/5 hover:bg-white/10 text-white px-4 py-2.5 rounded-xl border border-white/10 text-xs font-bold flex items-center justify-center gap-2 transition-all">
+                            Export CSV
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto custom-scroll max-h-[600px] bg-slate-900/30">
+                    <table class="w-full text-left border-collapse" id="mainTable">
+                        <thead class="sticky top-0 bg-[#0b0f17] z-10 border-b border-white/5">
+                            <tr class="text-[11px] text-slate-500 uppercase tracking-widest font-bold">
+                                <th class="p-5">Partner</th>
+                                <th class="p-5 text-right">Paid (₹)</th>
+                                <th class="p-5 text-right">Pending (₹)</th>
+                                <th class="p-5 text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="earningTable" class="text-sm divide-y divide-white/5">
+                            <tr><td colspan="4" class="p-10 text-center text-slate-500 italic">Fetching latest data...</td></tr>
+                        </tbody>
+                    </table>
+                    <div id="noResults" class="hidden p-10 text-center text-slate-500 text-sm">No partners found.</div>
+                </div>
+            </div>
+            
+            <!-- Claim -->
+             <div class="glass p-8 md:p-12 rounded-[32px] text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-transparent to-purple-500/10"></div>
+                <div class="relative z-10">
+                    <h2 class="text-2xl font-bold text-white mb-3">Claim Your Earnings</h2>
+                    <p class="text-slate-400 mb-8 max-w-lg mx-auto text-sm leading-relaxed">
+                        <b>Important:</b> After completing any task successfully, you must upload proof here to process your payment.
+                    </p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNtYE0lZwb8zPmF_BhXp5LrRnOHD8fS9vSP6s-SWqmFZRcmg/viewform" target="_blank" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-white text-black font-bold hover:bg-slate-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:scale-105">
+                        Claim Now 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+                    </a>
+                </div>
+            </div>
 
-</div>
+            <!-- TESTIMONIAL SLIDER -->
+            <div class="mt-12 max-w-3xl mx-auto px-4">
+                <h3 class="text-xl font-bold text-white mb-6 text-center flex items-center justify-center gap-2">
+                    💬 What Partners Say
+                </h3>
+                
+                <div class="glass p-8 rounded-3xl relative text-center min-h-[220px] flex flex-col items-center justify-center transition-opacity duration-500 border border-white/10 bg-slate-900/60" id="testimonial-card">
+                    <div class="absolute top-4 left-6 text-6xl text-white/5 font-serif">“</div>
+                    <div id="testi-content" class="fade-enter-active w-full"></div>
+                </div>
+                
+                <div class="flex items-center justify-center gap-6 mt-6">
+                    <button onclick="prevTestimonial()" class="p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M10.828 12l4.95 4.95-1.414 1.414L8 12l6.364-6.364 1.414 1.414z"/></svg>
+                    </button>
+                    <div class="flex gap-2" id="testi-dots"></div>
+                    <button onclick="nextTestimonial()" class="p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M13.172 12l-4.95-4.95 1.414-1.414L16 12l-6.364 6.364-1.414-1.414z"/></svg>
+                    </button>
+                </div>
+            </div>
 
-<!-- ✅ TOP & PENDING EARNINGS SCRIPT -->
-<script>
-const sheetUrl="https://opensheet.elk.sh/1T4NjO0eEKl7hXB45cho-eOhTdtCg0OVgra_Bi-k_WkY/Form%20responses%201";
+            <!-- FAQ -->
+            <div class="mt-16 max-w-2xl mx-auto mb-10 px-4">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">Frequently Asked Questions</h3>
+                <div class="space-y-4">
+                    <details class="group bg-white/5 p-4 rounded-xl border border-white/5 cursor-pointer transition hover:bg-white/10">
+                        <summary class="flex justify-between items-center font-medium text-slate-200 list-none">
+                            <span>When will I get my payment?</span>
+                            <span class="transition group-open:rotate-180 text-slate-500">▼</span>
+                        </summary>
+                        <p class="text-slate-400 text-xs mt-3 leading-relaxed">Payouts are processed within 24-48 hours after your task is successfully verified by the bank or brand. You can check the status in the ledger below.</p>
+                    </details>
+                    <details class="group bg-white/5 p-4 rounded-xl border border-white/5 cursor-pointer transition hover:bg-white/10">
+                        <summary class="flex justify-between items-center font-medium text-slate-200 list-none">
+                            <span>How to submit proof?</span>
+                            <span class="transition group-open:rotate-180 text-slate-500">▼</span>
+                        </summary>
+                        <p class="text-slate-400 text-xs mt-3 leading-relaxed">Click on the "Claim Now" button above and fill the Google Form with your screenshot and details.</p>
+                    </details>
+                </div>
+            </div>
 
-fetch(sheetUrl)
-.then(res=>res.json())
-.then(data=>{
-const earnings={},submitted=[];
-data.forEach(r=>{
-const name=(r["operator name "]||"Unknown").trim();
-const amt=(r["AMOUNT"]||"").trim();
-const st=(r["STATUS "]||"").trim().toUpperCase();
-if(amt===""&&st===""){submitted.push(name);return;}
-if(!earnings[name])earnings[name]={paid:0,pending:0};
-(st==="PAID")?earnings[name].paid+=+amt:earnings[name].pending+=+amt;
-});
-const t=document.getElementById("earningTable");
-t.innerHTML="";
-submitted.forEach(n=>{
-t.innerHTML+=`<tr><td>${n}</td><td>—</td><td>—</td>
-<td><span class="badge submitted"><span class="spin">🔄</span> Just Submitted Successfully</span></td></tr>`;
-});
-Object.entries(earnings).forEach(([n,v])=>{
-t.innerHTML+=`<tr><td>${n}</td><td>₹${v.paid}</td><td>₹${v.pending}</td>
-<td><span class="badge ${v.pending?"pending":"paid"}">${v.pending?"⏳ Pending":"✔ Paid"}</span></td></tr>`;
-});
-})
-.catch(()=>document.getElementById("earningTable").innerHTML=
-"<tr><td colspan='4'>Failed to load data</td></tr>");
-</script>
+            <footer class="mt-16 text-center text-xs text-slate-600 pb-8 font-mono border-t border-white/5 pt-8">
+                <div class="flex justify-center gap-4 mb-4">
+                    <span class="text-slate-500 hover:text-white cursor-pointer transition">Privacy Policy</span>
+                    <span class="text-slate-500 hover:text-white cursor-pointer transition">Terms of Service</span>
+                    <span class="text-slate-500 hover:text-white cursor-pointer transition">Support</span>
+                </div>
+                © 2025 EarnBridge Financials. All systems operational.
+            </footer>
 
+        </main>
+    </div>
+
+    <!-- Script -->
+    <script>
+        // SCROLL SPY FOR MOBILE NAV
+        const sections = document.querySelectorAll("body, #platforms, #earning-section");
+        const navItems = document.querySelectorAll(".nav-item");
+
+        window.addEventListener("scroll", () => {
+            let current = "";
+            
+            // Back to Top Button visibility
+            const btt = document.querySelector('.back-to-top');
+            if (window.scrollY > 300) btt.classList.add('show');
+            else btt.classList.remove('show');
+
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = "#" + section.getAttribute("id");
+                    if(section.tagName === "BODY") current = "#home";
+                }
+            });
+
+            navItems.forEach((li) => {
+                li.classList.remove("active");
+                if (li.getAttribute("href") === current) {
+                    li.classList.add("active");
+                }
+            });
+        });
+
+        // TESTIMONIALS
+        const testimonials = [
+            { name: "Md Salauddin", text: "EarnBridge is genuine. I made ₹15,000 in my first week processing bank accounts.", loc: "Patna", color: "bg-emerald-500" },
+            { name: "Rahul Sharma", text: "Best platform for passive income. The dashboard is very easy to use.", loc: "Delhi", color: "bg-blue-500" },
+            { name: "Priya Singh", text: "Payments are super fast. I use Myntra links for myself and get cashback.", loc: "Mumbai", color: "bg-purple-500" },
+            { name: "Amit Verma", text: "I do this part-time. Myntra discounts are a huge bonus!", loc: "Pune", color: "bg-orange-500" },
+            { name: "Sneha Kapoor", text: "Finally found a site that pays cash, not points. Love it.", loc: "Bangalore", color: "bg-pink-500" },
+            { name: "Vikram M.", text: "Support team on WhatsApp is very helpful. Leads get approved quickly.", loc: "Jaipur", color: "bg-indigo-500" },
+            { name: "Anjali Das", text: "Started with zero knowledge, now a top earner. Simple process.", loc: "Kolkata", color: "bg-red-500" },
+            { name: "Rohan Mehta", text: "AO Smart Banking has high payouts for credit cards. Must try.", loc: "Ahmedabad", color: "bg-teal-500" },
+            { name: "Zoya Khan", text: "Withdrawals are smooth. No hidden fees. 100% recommended.", loc: "Hyderabad", color: "bg-cyan-500" },
+            { name: "Arjun Nair", text: "Great for students. I pay my college fees with these earnings.", loc: "Chennai", color: "bg-yellow-500" }
+        ];
+
+        let currentTesti = 0;
+        let testiInterval;
+        const testiContent = document.getElementById('testi-content');
+        const dotsContainer = document.getElementById('testi-dots');
+
+        function renderDots() {
+            dotsContainer.innerHTML = '';
+            testimonials.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = `h-1.5 rounded-full transition-all duration-300 ${i === currentTesti ? 'bg-indigo-500 w-6' : 'bg-slate-700 w-2'}`;
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        function showTestimonial(index) {
+            const t = testimonials[index];
+            testiContent.style.opacity = '0';
+            testiContent.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                testiContent.innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full ${t.color} flex items-center justify-center text-white font-bold text-lg shadow-lg mb-4 border-2 border-slate-800">
+                            ${t.name.charAt(0)}
+                        </div>
+                        <div class="flex gap-1 text-yellow-400 text-sm mb-3">★★★★★</div>
+                        <p class="text-lg md:text-xl text-white font-light italic mb-6 leading-relaxed">"${t.text}"</p>
+                        <div>
+                            <div class="text-base font-bold text-white">${t.name}</div>
+                            <div class="text-xs text-slate-500 uppercase tracking-widest mt-1">${t.loc}</div>
+                        </div>
+                    </div>
+                `;
+                testiContent.style.opacity = '1';
+                testiContent.style.transform = 'translateY(0)';
+                renderDots();
+            }, 300);
+        }
+
+        function nextTestimonial() {
+            currentTesti = (currentTesti + 1) % testimonials.length;
+            showTestimonial(currentTesti);
+            resetInterval();
+        }
+
+        function prevTestimonial() {
+            currentTesti = (currentTesti - 1 + testimonials.length) % testimonials.length;
+            showTestimonial(currentTesti);
+            resetInterval();
+        }
+
+        function resetInterval() {
+            clearInterval(testiInterval);
+            testiInterval = setInterval(nextTestimonial, 5000);
+        }
+
+        showTestimonial(0);
+        resetInterval();
+
+        // SOCIAL TICKER
+        const fakeNames = ["Rahul", "Amit", "Sneha", "Priya", "Vikram", "Anjali"];
+        const fakeAmounts = [500, 1200, 2500, 350, 800];
+        
+        function startFakeTicker() {
+            const container = document.getElementById('social-ticker');
+            setInterval(() => {
+                const name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+                const amt = fakeAmounts[Math.floor(Math.random() * fakeAmounts.length)];
+                
+                const toast = document.createElement('div');
+                toast.className = 'proof-toast flex items-center gap-3 bg-[#0f172a]/90 backdrop-blur-md border border-emerald-500/30 p-3 rounded-xl shadow-2xl mb-3';
+                toast.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xs font-bold">${name[0]}</div>
+                    <div>
+                        <p class="text-xs text-slate-300 font-medium">${name} earned <span class="text-emerald-400 font-bold">₹${amt}</span></p>
+                        <p class="text-[10px] text-slate-500">Just now</p>
+                    </div>
+                `;
+                container.appendChild(toast);
+                
+                setTimeout(() => toast.classList.add('visible'), 100);
+                setTimeout(() => {
+                    toast.classList.remove('visible');
+                    setTimeout(() => toast.remove(), 500);
+                }, 4000);
+            }, 8000); 
+        }
+        startFakeTicker();
+
+        // DATA FETCHING & UI
+        let globalData = [];
+
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const colorClass = type === 'success' ? 'text-emerald-400 border-emerald-500/20 bg-emerald-500/5' : 'text-rose-400 border-rose-500/20 bg-rose-500/5';
+            toast.className = `toast backdrop-blur-md border px-4 py-3 rounded-xl shadow-2xl mb-3 flex items-center gap-3 min-w-[260px] ${colorClass}`;
+            toast.innerHTML = `<span class="text-sm font-medium text-slate-200">${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3000);
+        }
+
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString('en-IN');
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        function downloadCSV() {
+            if(!globalData.length) return showToast("No data to download", "error");
+            let csv = 'Partner Name,Total Paid,Pending Amount,Status\n';
+            globalData.forEach(row => { csv += `"${row.name}",${row.paid},${row.pending},${row.status}\n`; });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('hidden', ''); a.setAttribute('href', url); a.setAttribute('download', 'EarnBridge_Ledger.csv');
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            showToast("Ledger Exported Successfully");
+        }
+
+        function filterTable() {
+            const input = document.getElementById("searchInput").value.toUpperCase();
+            const rows = document.querySelectorAll("#earningTable tr");
+            let hasVisible = false;
+            rows.forEach(row => {
+                const nameCell = row.cells[0];
+                if(nameCell) {
+                    const txt = nameCell.textContent || nameCell.innerText;
+                    if(txt.toUpperCase().indexOf(input) > -1) {
+                        row.style.display = ""; hasVisible = true;
+                        if(input.length > 3 && txt.toUpperCase().includes(input)) {
+                             const status = row.cells[3].innerText;
+                             if(status.includes("PAID") && !window.confettiFired) {
+                                 confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#10B981', '#34D399', '#ffffff'] });
+                                 window.confettiFired = true; setTimeout(() => window.confettiFired = false, 5000);
+                             }
+                        }
+                    } else { row.style.display = "none"; }
+                }
+            });
+            document.getElementById("noResults").classList.toggle("hidden", hasVisible);
+        }
+
+        function renderTable(dataArray) {
+            const t = document.getElementById("earningTable");
+            t.innerHTML = "";
+            
+            if(dataArray.length === 0) {
+                t.innerHTML = `<tr><td colspan='4' class="p-10 text-center text-slate-500">No records found.</td></tr>`;
+                return;
+            }
+
+            const displayData = dataArray.slice(0, 10);
+
+            displayData.forEach(item => {
+                const isPending = item.pending > 0;
+                let statusHtml = item.type === 'submitted' 
+                    ? `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800 text-[10px] text-slate-300 border border-slate-700 font-bold uppercase tracking-wider">Verifying</span>` 
+                    : isPending 
+                    ? `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/10 text-[10px] text-amber-400 border border-amber-500/20 font-bold uppercase tracking-wider">Pending</span>` 
+                    : `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/10 text-[10px] text-emerald-400 border border-emerald-500/20 font-bold uppercase tracking-wider">Paid</span>`;
+
+                t.innerHTML += `
+                    <tr class="hover:bg-white/[0.02] transition-colors border-b border-white/5 group">
+                        <td class="p-5 font-medium text-slate-200 flex items-center gap-4">
+                           <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-xs font-bold text-slate-400 border border-white/5 shadow-inner">${item.name.charAt(0).toUpperCase()}</div>
+                           <span class="group-hover:text-white transition-colors">${item.name}</span>
+                        </td>
+                        <td class="p-5 text-right font-mono text-emerald-400 font-bold">₹${item.paid.toLocaleString('en-IN')}</td>
+                        <td class="p-5 text-right font-mono font-bold ${isPending ? 'text-amber-400' : 'text-slate-600'}">₹${item.pending.toLocaleString('en-IN')}</td>
+                        <td class="p-5 text-center">${statusHtml}</td>
+                    </tr>`;
+            });
+        }
+
+        const sheetUrl = "https://opensheet.elk.sh/1T4NjO0eEKl7hXB45cho-eOhTdtCg0OVgra_Bi-k_WkY/Form%20responses%201";
+
+        function findValue(row, possibleKeys) {
+            const rowKeys = Object.keys(row);
+            for (let key of rowKeys) {
+                const cleanKey = key.trim().toLowerCase();
+                if (possibleKeys.some(pk => cleanKey.includes(pk))) return row[key];
+            }
+            return "";
+        }
+
+        fetch(sheetUrl).then(res => res.json()).then(data => {
+            if (!data || data.length === 0) return;
+            const earnings = {};
+            const submitted = [];
+            let totalPaid = 0;
+            let totalPending = 0;
+
+            data.forEach(row => {
+                const name = (findValue(row, ["operator", "name"]) || "Unknown").trim();
+                const amtRaw = findValue(row, ["amount", "amt"]);
+                const amt = parseFloat(amtRaw ? amtRaw.toString().replace(/,/g, '') : "0") || 0;
+                const st = (findValue(row, ["status"]) || "").trim().toUpperCase();
+
+                if (amt === 0 && (st === "" || st === "SUBMITTED")) {
+                    if (name !== "Unknown") submitted.push({name, paid: 0, pending: 0, type: 'submitted', status: 'Verifying'});
+                } else {
+                    if (!earnings[name]) earnings[name] = { paid: 0, pending: 0 };
+                    if (st === "PAID" || st.includes("SUCCESS")) { earnings[name].paid += amt; totalPaid += amt; }
+                    else { earnings[name].pending += amt; totalPending += amt; }
+                }
+            });
+
+            globalData = [...submitted];
+            Object.entries(earnings).forEach(([n, v]) => {
+                globalData.push({ name: n, paid: v.paid, pending: v.pending, type: 'ledger', status: v.pending > 0 ? 'Pending' : 'Paid' });
+            });
+            
+            globalData.sort((a, b) => {
+                if(a.type === 'submitted' && b.type !== 'submitted') return -1;
+                if(a.type !== 'submitted' && b.type === 'submitted') return 1;
+                return b.pending - a.pending;
+            });
+
+            renderTable(globalData);
+            showToast("Secure Connection Established");
+            
+            document.getElementById('last-updated').innerText = new Date().toLocaleTimeString();
+
+            animateValue(document.getElementById("stat-paid"), 0, totalPaid, 1500);
+            animateValue(document.getElementById("stat-pending"), 0, totalPending, 1500);
+
+            const lb = document.getElementById("leaderboard"); lb.innerHTML = "";
+            const topEarners = [...globalData].sort((a,b) => b.paid - a.paid).slice(0, 3);
+            
+            topEarners.forEach((item, i) => {
+                if(item.paid > 0) {
+                    const colors = i===0 ? 'from-yellow-400 to-amber-600' : i===1 ? 'from-slate-300 to-slate-500' : 'from-orange-400 to-red-500';
+                    lb.innerHTML += `
+                    <div class="flex items-center justify-between p-3 rounded-2xl bg-[#090C14] border border-white/5 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-r ${colors} opacity-10 group-hover:opacity-20 transition"></div>
+                        <div class="flex items-center gap-4 relative z-10">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br ${colors} flex items-center justify-center text-xs font-bold text-white shadow-lg border border-white/20">
+                                ${i===0 ? '👑' : `#${i+1}`}
+                            </div>
+                            <span class="text-sm font-bold text-white truncate max-w-[150px] tracking-wide">${item.name}</span>
+                        </div>
+                        <span class="relative z-10 text-sm font-mono font-bold text-emerald-400">₹${item.paid.toLocaleString('en-IN')}</span>
+                    </div>`;
+                }
+            });
+        }).catch(err => showToast("Connection Error", "error"));
+    </script>
 </body>
 </html>
